@@ -1,0 +1,18 @@
+production:
+  ldap:
+    host:
+    port:
+    username:
+    password:
+    search:
+      base:
+      filter:
+development:
+  ldap:
+    host:
+    port:
+    username:
+    password:
+    search:
+      base:
+      filter:

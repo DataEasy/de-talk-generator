@@ -6,41 +6,32 @@ module Devise
     class LdapAuthenticatable < Authenticatable
       def authenticate!
         if params[:user]
-          #ldap = Net::LDAP.new
-          #ldap.host = '192.168.200.197:389'
-          #ldap.port = '389'
-          #ldap.auth username, password
+          ldap = Net::LDAP.new(host: ldap_host, port: ldap_port)
 
-          ldap = Net::LDAP.new  :host => "192.168.200.197",
-                      :port => "389",
-                      :auth => {
-                        :method => :simple,
-                        :username => 'uid=chronus,ou=People,dc=chronus,dc=com,dc=br',
-                        :password => 'chronus'
-                      }
+          ldap.auth ldap_username, ldap_password
 
-          filter = Net::LDAP::Filter.eq('uid', username)
-          treebase = "dc=chronus,dc=com,dc=br"
+          result = ldap.bind_as(base: ldap_search_base, filter: search_filter, password: password)
 
-          ldap.search( :base => treebase, :filter => filter ) do |entry|
-            puts "DN: #{entry.dn}"
-            entry.each do |attribute, values|
-              puts "   #{attribute}:"
-              values.each do |value|
-                puts "      --->#{value}"
-              end
+          if result
+            user = User.find_by_username(username)
+
+            if user
+              #Keep password updated
+              user.password = password
+              user.save
+            else
+              user = User.new username: username, password: password
+              user.save(:validate => false)
             end
-          end
-          p ldap.get_operation_result
 
-          if ldap.bind
-            user = User.find_or_create_by(username: username)
             success!(user)
           else
             fail(:invalid_login)
           end
         end
       end
+
+      private
 
       def username
         params[:user][:username]
@@ -50,6 +41,34 @@ module Devise
         params[:user][:password]
       end
 
+      # From Configuration
+      def search_filter
+        ldap_search_filter % username
+      end
+
+      def ldap_host
+        Rails.configuration.detalk['ldap']['host']
+      end
+
+      def ldap_port
+        Rails.configuration.detalk['ldap']['port']
+      end
+
+      def ldap_username
+        Rails.configuration.detalk['ldap']['username']
+      end
+
+      def ldap_password
+        Rails.configuration.detalk['ldap']['password']
+      end
+
+      def ldap_search_base
+        Rails.configuration.detalk['ldap']['search']['base']
+      end
+
+      def ldap_search_filter
+        Rails.configuration.detalk['ldap']['search']['filter']
+      end
     end
   end
 end
