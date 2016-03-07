@@ -1,10 +1,23 @@
 Rails.application.routes.draw do
+  resources :talks do
+    member do
+      get 'preview_publish'
+      get 'preview_cover_image'
+      patch 'publish'
+      get 'cancel'
+    end
+
+    collection do
+      get 'the_month'
+    end
+  end
+
   devise_for :users
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'home#index'
+  root 'home#index', as: :home
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

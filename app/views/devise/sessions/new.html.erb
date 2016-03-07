@@ -1,6 +1,6 @@
 <div class="panel panel-default center-block" style="min-width: 300px; max-width: 400px;">
   <div class="panel-heading">
-    <h3 class="panel-title">Login</h3>
+    <h3 class="panel-title"><%= t('title.login') %></h3>
   </div>
   <div class="panel-body">
     <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
@@ -23,8 +23,8 @@
         <% end -%>
 
         <div class="form-group">
-            <%= f.submit 'Log in', class: 'btn btn-default' %>
-          <%= render 'devise/shared/links' %>
+            <%= f.submit t('buttons.login'), class: 'btn btn-default' %>
+            <%= render 'devise/shared/links' %>
         </div>
     <% end %>
   </div>

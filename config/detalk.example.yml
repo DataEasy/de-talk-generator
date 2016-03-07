@@ -6,7 +6,12 @@ production:
     password:
     search:
       base:
-      filter:
+      filter: # Filter used to find the user. Ex.: "(uid=%s)", where '%s' will be past the username
+  slack:
+    channel: #Channel name using #<channel name>
+    token: # API token
+    message: # Message sent when talk has been published
+    message_talk_canceled: # Message sent when talk has been canceled. The DE Talk name will be past as param (%s)
 development:
   ldap:
     host:
@@ -16,3 +21,8 @@ development:
     search:
       base:
       filter:
+  slack:
+    channel:
+    token:
+    message:
+    message_talk_canceled:

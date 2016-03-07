@@ -1,1 +1,104 @@
-<h1>Home</h1>
+<div class="row">
+	<div class="col-xs-12 col-sm-8">
+		<div id='calendar'></div>
+	</div><!--/.col-xs-12.col-sm-9-->
+	<div class="col-xs-12 col-sm-4">
+		<div class="panel panel-default">
+		  <div class="panel-heading"><%= t('views.home.new_talk_title') %></div>
+		  <div class="panel-body">
+            <%= form_for(@talk) do |f| %>
+                <%= render 'talks/form', f: f %>
+                <%= f.submit class: 'btn btn-primary pull-right' %>
+            <% end %>
+		  </div>
+		</div>
+	</div><!--/.col-xs-12.col-sm-3-->
+</div><!--/row-->
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalTitle"></h4>
+      </div>
+      <div class="modal-body" id="myModalBody"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><%= t('buttons.close') %></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+	$(document).ready(function() {
+        $('#myModal').on('shown.bs.modal', function () {
+            $('#myInput').focus()
+        });
+
+		$('#calendar').fullCalendar({
+			header: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'month,agendaWeek,agendaDay'
+			},
+			defaultDate: '<%= l DateTime.now, locale: :en, format: :default %>',
+			lang: "<%= t 'views.home.full_calendar_lang' %>",
+			editable: false,
+			buttonIcons: false, // show the prev/next text
+			eventLimit: true, // allow "more" link when too many events
+			events: {
+				url: "<%= the_month_talks_url %>.json",
+				error: function() {
+					alert('Fail to load de talks')
+				}
+			},
+            eventClick: function(calEvent, jsEvent, view) {
+                $('#myModalTitle').text(calEvent.title);
+                $('#myModalBody').html("<img src='"+calEvent.cover_url+"' class='img-responsive' />");
+
+                $('#myModal').modal({
+                    keyboard: false,
+                    backdrop: 'static'
+                });
+            }
+		});
+
+		$(".no-select2").select2({
+			/*ajax: {
+		    url: "https://api.github.com/search/repositories",
+		    dataType: 'json',
+		    delay: 250,
+		    data: function (params) {
+		      return {
+		        q: params.term, // search term
+		        page: params.page
+		      };
+		    },
+		    processResults: function (data, params) {
+		      // parse the results into the format expected by Select2
+		      // since we are using custom formatting functions we do not need to
+		      // alter the remote JSON data, except to indicate that infinite
+		      // scrolling can be used
+		      params.page = params.page || 1;
+
+		      return {
+		        results: data.items,
+		        pagination: {
+		          more: (params.page * 30) < data.total_count
+		        }
+		      };
+		    },
+		    cache: true
+		  },
+		  escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+		  minimumInputLength: 1,
+		  templateResult: formatRepo, // omitted for brevity, see the source of this page
+		  templateSelection: formatRepoSelection // omitted for brevity, see the source of this page*/
+
+			tags: true
+		});
+	});
+
+</script>

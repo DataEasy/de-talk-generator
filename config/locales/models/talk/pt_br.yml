@@ -1,0 +1,24 @@
+"pt-br":
+  activerecord:
+    models:
+      talk:
+        one: Talk
+        other: Talks
+    errors:
+      models:
+        talk:
+          attributes:
+            date:
+              taken: "Já existe uma DE Talk publicada para esta data e hora"
+    attributes:
+      talk:
+        first_name: Primeiro Nome
+        last_name: Último Nome
+        number: Número
+        title: Título
+        subtitle: Subtítulo
+        date: Data
+        time: Hora
+        target: Alvos
+        tag_list: Lista de Tags
+        published: Publicada

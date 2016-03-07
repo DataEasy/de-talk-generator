@@ -1,0 +1,13 @@
+"pt-br":
+  views:
+    talks:
+      datepicker_form: 'dd/mm/yyyy'
+      datepicker_language: 'pt-BR'
+      hints:
+        published: "Publicada"
+        waiting_publishing: "Aguardando publicação"
+        generating_image: "Gerando Imagem"
+        fail_load_html: "Falha ao tentar gerar capa.<br/> Tente novamente."
+      titles:
+        preview_cover: "DE Talk #%{talk_number} - Pré-Visualização da Capa"
+        my_detalks: "Minhas DE Talks"

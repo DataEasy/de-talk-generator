@@ -1,0 +1,15 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">
+        <%= t('title.new', entity: Talk.model_name.human) %>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<%= form_for(@talk) do |f| %>
+<%= render 'form', f: f %>
+<%= f.submit t('buttons.create'), class: 'btn btn-primary' %>
+<%= link_to t('buttons.cancel'), talks_path, class: 'btn btn-default' %>
+<% end %>

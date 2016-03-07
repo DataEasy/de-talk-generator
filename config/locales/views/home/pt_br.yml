@@ -1,0 +1,5 @@
+"pt-br":
+  views:
+    home:
+      new_talk_title: Nova DE Talk
+      full_calendar_lang: 'pt-br'

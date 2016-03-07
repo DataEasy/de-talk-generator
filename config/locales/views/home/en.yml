@@ -1,0 +1,5 @@
+en:
+  views:
+    home:
+      new_talk_title: New DE Talk
+      full_calendar_lang: en

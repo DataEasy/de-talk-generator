@@ -1,0 +1,27 @@
+db:
+  image: postgres:9.4
+  ports:
+    - "54320:5432"
+  environment:
+    - POSTGRES_USER=detalk
+    - POSTGRES_PASSWORD=detalk
+    - POSTGRES_DB=detalk
+  volumes:
+    - /etc/postgresql
+    - /var/log/postgresql
+    - /var/lib/postgresql
+
+web:
+  container_name: 'detalk_web'
+  build: .
+  ports:
+    - "3000:3000"
+  volumes:
+    - /detalk
+  environment:
+    - DETALK_DB_HOST=db
+    - DETALK_DB=detalk
+    - DETALK_DB_USER=detalk
+    - DETALK_DB_PASSWORD=detalk
+  links:
+    - db

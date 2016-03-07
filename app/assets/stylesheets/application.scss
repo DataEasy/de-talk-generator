@@ -1,0 +1,47 @@
+@import "bootstrap-sprockets";
+@import "bootstrap";
+@import 'fullcalendar-2.6.1/fullcalendar.min';
+@import 'datepicker/datepicker3';
+@import 'select2/select2.min';
+
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require_self
+ */
+
+ /*
+  * Style tweaks
+  * --------------------------------------------------
+  */
+ html,
+ body {
+   overflow-x: hidden; /* Prevent scroll on narrow devices */
+ }
+ body {
+   padding-top: 70px;
+ }
+ footer {
+   padding: 30px 0;
+ }
+
+.loading{
+  min-width: 140px;
+  min-height: 40px;
+  width: 140px; /* Tamanho do div */
+  height: 40px; /* Altura do div */
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -70px; /* Tamanho do div divido por 2 */
+  margin-top: -20px; /* Altura do div divido por 2 */
+}
