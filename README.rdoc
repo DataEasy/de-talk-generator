@@ -26,3 +26,12 @@ Things you may want to cover:
 
 Please feel free to use a different markup language if you do not plan to run
 <tt>rake doc:app</tt>.
+
+
+== Docker
+docker-compose up -d
+docker exec -it detalk_web bash
+
+docker-compose stop
+docker-compose rm -f -v
+docker rmi $(docker images | grep detalk_web | awk '{ print $3 }')
