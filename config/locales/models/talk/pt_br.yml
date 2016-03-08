@@ -10,6 +10,7 @@
           attributes:
             date:
               taken: "Já existe uma DE Talk publicada para esta data e hora"
+              greater_than_today: "%{value} tem que ser maior que hoje"
     attributes:
       talk:
         first_name: Primeiro Nome

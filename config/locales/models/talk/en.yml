@@ -10,6 +10,7 @@ en:
           attributes:
             date:
               taken: "There's a DE Talk published at this date and hour"
+              greater_than_today: "%{value} must be greater than today"
     attributes:
       user:
         first_name: First name
