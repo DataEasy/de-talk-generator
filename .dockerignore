@@ -4,5 +4,4 @@
 tmp/*
 log/*
 build/*
-docker/*
 Dockerfile
