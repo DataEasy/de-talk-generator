@@ -53,6 +53,8 @@ class TalksController < ApplicationController
         format.html { redirect_to @talk, notice: t('messages.successfully_updated', entity: Talk.model_name.human) }
         format.json { render :show, status: :ok, location: @talk }
       else
+        @tags_most_used = @talk.tag_list
+
         format.html { render :edit }
         format.json { render json: @talk.errors, status: :unprocessable_entity }
       end
