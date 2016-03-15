@@ -173,7 +173,7 @@ class TalksController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def talk_params
-    params.require(:talk).permit(:title, :subtitle, :date, :time, :filename,
+    params.require(:talk).permit(:title, :subtitle, :date_str, :time, :filename,
       :first_name, :last_name, :number, :target, {tag_list: []})
   end
 
@@ -185,7 +185,7 @@ class TalksController < ApplicationController
       "\"s\#{{lastName}}\##{talk.last_name}\#\"",
       "\"s\#{{title}}\##{talk.title}\#\"",
       "\"s\#{{subtitle}}\##{talk.subtitle}\#\"",
-      "\"s\#{{date}}\##{talk.date.strftime("%d/%m")}\#\"",
+      "\"s\#{{date}}\##{talk.date_str(:very_short)}\#\"",
       "\"s\#{{time}}\##{l(talk.time, format: :very_short)}\#\"",
       "\"s\#{{num}}\##{talk.number_formated}\#\"",
       "\"s\#{{keywords}}\##{talk.tag_list.to_s.truncate(max_tag_caracters)}\#\"",

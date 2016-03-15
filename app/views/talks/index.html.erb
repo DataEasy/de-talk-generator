@@ -31,7 +31,7 @@
       <td><%= talk.number_formated %></td>
       <td><%= talk.title %></td>
       <td><%= talk.subtitle %></td>
-      <td class="text-center"><%= l talk.date, format: :default %></td>
+      <td class="text-center"><%= talk.date_str %></td>
       <td class="text-center"><%= l talk.time, format: :very_short %></td>
       <td class="text-center">
         <% if talk.published %>

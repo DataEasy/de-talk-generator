@@ -55,6 +55,7 @@ en:
       default: "%Y-%m-%d"
       long: "%B %d, %Y"
       short: "%b %d"
+      very_short: "%m-%d"
     month_names:
     -
     - January

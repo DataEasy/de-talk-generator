@@ -19,6 +19,7 @@ en:
         title: Title
         subtitle: Subtitle
         date: Date
+        date_str: Date
         time: Time
         target: Target
         tag_list: Tag list

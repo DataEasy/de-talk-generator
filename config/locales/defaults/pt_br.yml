@@ -55,6 +55,7 @@
       default: "%d/%m/%Y"
       long: "%d de %B de %Y"
       short: "%d de %B"
+      very_short: "%d/%m"
     month_names:
     -
     - Janeiro

@@ -19,6 +19,7 @@
         title: Título
         subtitle: Subtítulo
         date: Data
+        date_str: Data
         time: Hora
         target: Alvos
         tag_list: Lista de Tags
