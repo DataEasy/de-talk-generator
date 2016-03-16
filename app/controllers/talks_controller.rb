@@ -5,6 +5,8 @@ class TalksController < ApplicationController
   before_action :set_talk, only: [:show, :edit, :update, :destroy, :preview_publish, :publish, :preview_cover_image, :cancel]
   before_action :can_change, only: [:edit, :update, :destroy, :preview_publish, :publish]
 
+  autocomplete :tag, :name, class_name: 'ActsAsTaggableOn::Tag'
+
   # GET /talks
   # GET /talks.json
   def index
@@ -148,7 +150,7 @@ class TalksController < ApplicationController
     send_data contents, type: 'image/png', disposition: 'inline'
   end
 
-  def the_month
+  def monthly
     date_start = Date.parse(params[:start])
     date_end = Date.parse(params[:end])
 
@@ -220,6 +222,12 @@ class TalksController < ApplicationController
       )
     rescue Exception => error
       logger.error error
+    end
+  end
+
+  def json_for_autocomplete(items, method, extra_data=[])
+    items.collect do |item|
+      {id: item.send(method), label: item.send(method)}
     end
   end
 

@@ -8,7 +8,8 @@ Rails.application.routes.draw do
     end
 
     collection do
-      get 'the_month'
+      get :monthly
+      get :autocomplete_tag_name
     end
   end
 
