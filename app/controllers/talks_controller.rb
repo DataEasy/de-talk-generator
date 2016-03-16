@@ -1,6 +1,7 @@
 require 'fileutils'
 
 class TalksController < ApplicationController
+  before_action :load_cover_service
   before_action :set_talk, only: [:show, :edit, :update, :destroy, :preview_publish, :publish, :preview_cover_image, :cancel]
   before_action :can_change, only: [:edit, :update, :destroy, :preview_publish, :publish]
 
@@ -86,7 +87,7 @@ class TalksController < ApplicationController
 
     if @talk.save
       begin
-        filename = create_detalk_img(@talk)
+        filename = @cover_service.create_cover(@talk)
 
         tmp_png_path = Rails.root.join('tmp', "#{filename}.png")
         cover_path = Rails.root.join('public', 'images',  "#{@talk.title_for_cover_filename}.png")
@@ -135,7 +136,7 @@ class TalksController < ApplicationController
 
   def preview_cover_image
     @talk.number = Talk.where(published: true).maximum(:number).to_i + 1
-    filename = create_detalk_img(@talk)
+    filename = @cover_service.create_cover(@talk)
 
     svg_tmp = Rails.root.join('tmp', "#{filename}.svg")
     cover = Rails.root.join('tmp', "#{filename}.png")
@@ -175,41 +176,6 @@ class TalksController < ApplicationController
   def talk_params
     params.require(:talk).permit(:title, :subtitle, :date_str, :time, :filename,
       :first_name, :last_name, :number, :target, {tag_list: []})
-  end
-
-  def create_detalk_img(talk)
-    max_tag_caracters = 60
-
-    arg_list = [
-      "\"s\#{{firstName}}\##{talk.first_name}\#\"",
-      "\"s\#{{lastName}}\##{talk.last_name}\#\"",
-      "\"s\#{{title}}\##{talk.title}\#\"",
-      "\"s\#{{subtitle}}\##{talk.subtitle}\#\"",
-      "\"s\#{{date}}\##{talk.date_str(:very_short)}\#\"",
-      "\"s\#{{time}}\##{l(talk.time, format: :very_short)}\#\"",
-      "\"s\#{{num}}\##{talk.number_formated}\#\"",
-      "\"s\#{{keywords}}\##{talk.tag_list.to_s.truncate(max_tag_caracters)}\#\"",
-      "\"s\#{{target}}\##{talk.target}\#\""
-    ]
-
-    svg_source = Rails.root.join('app', 'assets', 'images', 'Template_DE_Talks.svg')
-
-    filename = "tmp_de_talk-#{SecureRandom.uuid}"
-    svg_tmp = Rails.root.join('tmp', "#{filename}.svg")
-    png_tmp = Rails.root.join('tmp', "#{filename}.png")
-
-    FileUtils.cp svg_source, svg_tmp
-
-    output_png = Rails.root.join('tmp', png_tmp)
-
-    args = "sed -i'' -e #{arg_list.join(' -e ')} \"#{svg_tmp}\""
-
-    if system(args)
-      system("inkscape \"#{svg_tmp}\" -e \"#{output_png}\" &> /dev/null")
-      sleep(2) #This sleep is mandatory to wait until inkscape processes the image
-    end
-
-    filename
   end
 
   def publish_new_detalk_on_slack(talk)
@@ -255,5 +221,9 @@ class TalksController < ApplicationController
     rescue Exception => error
       logger.error error
     end
+  end
+
+  def load_cover_service(service = CoverService.new)
+    @cover_service ||= service
   end
 end
