@@ -97,6 +97,8 @@ class TalksController < ApplicationController
         FileUtils.cp tmp_png_path, cover_path
         FileUtils.rm Rails.root.join('tmp', "#{filename}.svg")
         FileUtils.rm tmp_png_path
+
+        CreateGoogleDriveFolderJob.perform_later(@talk.id)
       rescue
         @talk.number = nil
         @talk.save!
@@ -132,6 +134,8 @@ class TalksController < ApplicationController
 
     @talk.number = number
     publish_detalk_canceled_on_slack @talk
+
+    DeleteGoogleDriveFolderJob.perform_later(@talk.id)
 
     redirect_to talks_path, notice: t('messages.successfully_canceled', entity: Talk.model_name.human)
   end
