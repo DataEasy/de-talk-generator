@@ -2,7 +2,6 @@ require 'google/apis/drive_v3'
 
 class GoogleDriveService
   SERVICE_ACCOUNT_INFO = Rails.root.join('lib', 'DeTalk-ba98bca861b9.json')
-  SERVICE_ACCOUNT_KEY = Rails.root.join('lib', 'DeTalk-f63ad8ef7e80.p12')
 
   def initialize
     scope = ['https://www.googleapis.com/auth/drive']
