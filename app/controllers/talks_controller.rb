@@ -2,6 +2,7 @@ require 'fileutils'
 
 class TalksController < ApplicationController
   before_action :load_cover_service
+  before_action :load_slack_service
   before_action :set_talk, only: [:show, :edit, :update, :destroy, :preview_publish, :publish, :preview_cover_image, :cancel]
   before_action :can_change, only: [:edit, :update, :destroy, :preview_publish, :publish]
 
@@ -108,7 +109,7 @@ class TalksController < ApplicationController
       if @talk.save
 
       ActiveSupport::Notifications.instrument(Detalk::Constants::NOTIFICATIONS_TALK_PUBLISHED, :talk_id => @talk.id)
-      publish_new_detalk_on_slack @talk
+      @slack_service.send_new_detalk_published @talk
 
       redirect_to @talk, notice: t('messages.successfully_published', entity: Talk.model_name.human)
       else
@@ -134,7 +135,7 @@ class TalksController < ApplicationController
     @talk.number = number
 
     ActiveSupport::Notifications.instrument(Detalk::Constants::NOTIFICATIONS_TALK_CANCELED, :talk_id => @talk.id)
-    publish_detalk_canceled_on_slack @talk
+    @slack_service.send_detalk_canceled @talk
 
     redirect_to talks_path, notice: t('messages.successfully_canceled', entity: Talk.model_name.human)
   end
@@ -183,51 +184,6 @@ class TalksController < ApplicationController
       :first_name, :last_name, :number, :target, {tag_list: []})
   end
 
-  def publish_new_detalk_on_slack(talk)
-    begin
-      client = Slack::Web::Client.new
-
-      cover = File.open(Rails.root.join('public', 'images', talk.filename))
-
-      client.files_upload(
-          channels: Rails.configuration.detalk['slack']['channel'],
-          as_user: false,
-          file: Faraday::UploadIO.new(cover, 'image/png'),
-          title: "DE Talks ##{talk.number_formated} - #{talk.title}",
-          filename: "#{talk.title_for_cover_filename}.png",
-          icon_emoji: ':de_bot:'
-      )
-
-      cover.close
-
-      client.chat_postMessage(
-          channel: Rails.configuration.detalk['slack']['channel'],
-          text: Rails.configuration.detalk['slack']['message'],
-          as_user: false,
-          icon_emoji: ':de_bot:'
-      )
-    rescue Exception => error
-      logger.error error
-    end
-  end
-
-  def publish_detalk_canceled_on_slack(talk)
-    begin
-      client = Slack::Web::Client.new
-
-      message = Rails.configuration.detalk['slack']['message_talk_canceled'] % talk.title_formated
-
-      client.chat_postMessage(
-          channel: Rails.configuration.detalk['slack']['channel'],
-          text: message,
-          as_user: false,
-          icon_emoji: ':de_bot:'
-      )
-    rescue Exception => error
-      logger.error error
-    end
-  end
-
   def json_for_autocomplete(items, method, extra_data=[])
     items.collect do |item|
       {id: item.send(method), label: item.send(method)}
@@ -236,5 +192,9 @@ class TalksController < ApplicationController
 
   def load_cover_service(service = CoverService.new)
     @cover_service ||= service
+  end
+
+  def load_slack_service(service = SlackService.new)
+    @slack_service ||= service
   end
 end
