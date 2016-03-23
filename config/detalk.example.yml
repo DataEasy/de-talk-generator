@@ -1,4 +1,5 @@
 production:
+  google_drive_folder: # You need to create a folder and share with the application(It'll access using service account)
   ldap:
     host:
     port:
@@ -8,11 +9,12 @@ production:
       base:
       filter: # Filter used to find the user. Ex.: "(uid=%s)", where '%s' will be past the username
   slack:
-    channel: #Channel name using #<channel name>
+    channel: # Channel name using #<channel name>
     token: # API token
     message: # Message sent when talk has been published
     message_talk_canceled: # Message sent when talk has been canceled. The DE Talk name will be past as param (%s)
 development:
+  google_drive_folder:
   ldap:
     host:
     port:

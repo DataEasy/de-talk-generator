@@ -11,17 +11,39 @@ db:
     - /var/log/postgresql
     - /var/lib/postgresql
 
+redis:
+  image: redis
+  ports:
+    - "6379"
+
+sidekiq:
+  build: .
+  volumes:
+    - .:/detalk
+  command: bundle exec sidekiq
+  environment:
+    - DETALK_DB_HOST=db
+    - DETALK_DB=detalk
+    - DETALK_DB_USER=detalk
+    - DETALK_DB_PASSWORD=detalk
+    - JOB_WORKER_URL=redis://redis:6379/0
+  links:
+    - db
+    - redis
+
 web:
   container_name: 'detalk_web'
   build: .
   ports:
     - "3000:3000"
   volumes:
-    - /detalk
+    - .:/detalk
   environment:
     - DETALK_DB_HOST=db
     - DETALK_DB=detalk
     - DETALK_DB_USER=detalk
     - DETALK_DB_PASSWORD=detalk
+    - JOB_WORKER_URL=redis://redis:6379/0
   links:
     - db
+    - redis

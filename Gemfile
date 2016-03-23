@@ -28,8 +28,10 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'devise', '3.5.6'
 gem 'net-ldap', '~> 0.14.0'
 gem 'acts-as-taggable-on', '3.5.0'
-gem 'slack-ruby-client'
+gem 'slack-ruby-client', '0.6.0'
 gem 'google-api-client', '0.9'
+gem 'rails4-autocomplete', '1.1.1'
+gem 'sidekiq'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

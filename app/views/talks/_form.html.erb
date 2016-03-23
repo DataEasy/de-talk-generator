@@ -61,7 +61,27 @@
 <script type="text/javascript">
 $(document).ready(function() {
   $(".select2").select2({
-    tags: true
+      language: "<%= t 'views.talks.select2_language' %>",
+      ajax: {
+          url: '<%= autocomplete_tag_name_talks_path %>',
+          dataType: 'json',
+          delay: 250,
+          data: function (params) {
+              return { term: params.term }; // search term
+          },
+          processResults: function (data, params) {
+              return { results: data };
+          },
+          cache: true
+      },
+      minimumInputLength: 2,
+      templateSelection: function(data, container){
+          return data.label || data.text;
+      },
+      templateResult: function (data) {
+          return data.label || data.text;
+      },
+      tags: true
   });
 
   $("[data-mask]").inputmask();

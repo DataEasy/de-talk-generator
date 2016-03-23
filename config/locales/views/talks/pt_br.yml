@@ -3,6 +3,7 @@
     talks:
       datepicker_form: 'dd/mm/yyyy'
       datepicker_language: 'pt-BR'
+      select2_language: 'pt-BR'
       hints:
         published: "Publicada"
         waiting_publishing: "Aguardando publicação"
