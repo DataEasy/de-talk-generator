@@ -1,5 +1,8 @@
 production:
-  google_drive_folder: # You need to create a folder and share with the application(It'll access using service account)
+  google_drive:
+    active: # Write 'true' if you want active
+    shared_folder: # You need to create a folder and share with the application(It'll access using service account)
+    service_account_json:
   ldap:
     host:
     port:
@@ -9,12 +12,16 @@ production:
       base:
       filter: # Filter used to find the user. Ex.: "(uid=%s)", where '%s' will be past the username
   slack:
+    active: # Write 'true' if you want active
     channel: # Channel name using #<channel name>
     token: # API token
     message: # Message sent when talk has been published
     message_talk_canceled: # Message sent when talk has been canceled. The DE Talk name will be past as param (%s)
 development:
-  google_drive_folder:
+  google_drive:
+    active:
+    shared_folder:
+    service_account_json:
   ldap:
     host:
     port:
@@ -24,6 +31,7 @@ development:
       base:
       filter:
   slack:
+    active:
     channel:
     token:
     message:

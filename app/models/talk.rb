@@ -42,7 +42,7 @@ class Talk < ActiveRecord::Base
   def validate_date
     errors.add(:date_str, :invalid) if @date_str_invalid
 
-    validate_date_greater_than_today
+    validate_date_greater_than_today if published?
   end
 
   def validate_date_greater_than_today

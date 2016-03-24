@@ -107,7 +107,7 @@ class TalksController < ApplicationController
       @talk.filename = "#{@talk.title_for_cover_filename}.png"
       if @talk.save
 
-      ActiveSupport::Notifications.instrument(Detalk::Constants::NOTIFICATIONS_TALK_PUBLISHED, :talk_id => @talk.id)
+      ActiveSupport::Notifications.instrument(Detalk::Constants::NOTIFICATIONS_TALK_PUBLISHED, :talk => @talk)
 
       redirect_to @talk, notice: t('messages.successfully_published', entity: Talk.model_name.human)
       else
@@ -121,18 +121,14 @@ class TalksController < ApplicationController
   def cancel
     return redirect_to talks_path, notice: t('messages.talks.already_canceled') unless @talk.published
 
-    FileUtils.rm(Rails.root.join('public', 'images',  @talk.filename))
+    FileUtils.rm(Rails.root.join('public', 'images',  @talk.filename), force: true)
 
     number = @talk.number
 
-    @talk.filename = nil
-    @talk.number = nil
-    @talk.published = false
-    @talk.save!
-
+    @talk.update!(filename: nil, number: nil, published: false)
     @talk.number = number
 
-    ActiveSupport::Notifications.instrument(Detalk::Constants::NOTIFICATIONS_TALK_CANCELED, :talk_id => @talk.id)
+    ActiveSupport::Notifications.instrument(Detalk::Constants::NOTIFICATIONS_TALK_CANCELED, :talk => @talk)
 
     redirect_to talks_path, notice: t('messages.successfully_canceled', entity: Talk.model_name.human)
   end

@@ -1,11 +1,16 @@
 require 'slack-ruby-client'
 
 class SlackService
-  def send_detalk_canceled(talk)
+  def send_detalk_canceled(talk_title_formated)
+    unless Rails.configuration.detalk['slack']['channel']
+      Rails.logger.warn 'The channel was not specified.'
+      return
+    end
+
     begin
       client = Slack::Web::Client.new
 
-      message = Rails.configuration.detalk['slack']['message_talk_canceled'] % talk.title_formated
+      message = Rails.configuration.detalk['slack']['message_talk_canceled'] % talk_title_formated
 
       client.chat_postMessage(
           channel: Rails.configuration.detalk['slack']['channel'],
@@ -19,6 +24,11 @@ class SlackService
   end
 
   def send_new_detalk_published(talk)
+    unless Rails.configuration.detalk['slack']['channel']
+      Rails.logger.warn 'The channel was not specified.'
+      return
+    end
+
     begin
       client = Slack::Web::Client.new
 

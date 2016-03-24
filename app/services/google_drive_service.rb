@@ -1,21 +1,23 @@
 require 'google/apis/drive_v3'
 
 class GoogleDriveService
-  SERVICE_ACCOUNT_INFO = Rails.root.join('lib', 'DeTalk-ba98bca861b9.json')
-
   def initialize
     scope = ['https://www.googleapis.com/auth/drive']
-    authorization = Google::Auth::ServiceAccountCredentials.make_creds(json_key_io: SERVICE_ACCOUNT_INFO, scope: scope)
+    authorization = Google::Auth::ServiceAccountCredentials.make_creds(json_key_io: get_service_account_json, scope: scope)
 
     @drive = Google::Apis::DriveV3::DriveService.new
     @drive.authorization = authorization
   end
 
   def create_detalk_folder(folder_name)
+    folder_parent_id = get_folder_parent_id
+
+    return unless folder_parent_id
+
     file_metadata = {
       name: folder_name,
       mime_type: 'application/vnd.google-apps.folder',
-      parents: [get_folder_parent_id]
+      parents: [folder_parent_id]
     }
 
     file = @drive.create_file(file_metadata, fields: 'id')
@@ -23,17 +25,39 @@ class GoogleDriveService
     file.id
   end
 
-  def delete_detalk_folder(folder_id)
-    @drive.delete_file(folder_id, fields: 'id')
+  def delete_detalk_folder(item_id)
+    @drive.delete_file(item_id, fields: 'id') if item_id
+  rescue Exception => ex
+    Rails.logger.error ex
   end
 
   private
 
   def get_folder_parent_id
-    google_drive_folder = Rails.configuration.detalk['google_drive_folder']
+    shared_folder_id = Rails.configuration.detalk['google_drive']['shared_folder_id']
+    return shared_folder_id if shared_folder_id
 
-    files = @drive.list_files(q: "name='#{google_drive_folder}'", spaces: 'drive')
+    shared_folder_id = get_folder_id_by_name(Rails.configuration.detalk['google_drive']['shared_folder'])
+
+    return unless shared_folder_id
+
+    Rails.configuration.detalk['google_drive']['shared_folder_id'] = shared_folder_id
+
+    shared_folder_id
+  end
+
+  def get_folder_id_by_name(folder_name)
+    files = @drive.list_files(q: "name='#{folder_name}'", spaces: 'drive')
+
+    if files.files.empty?
+      Rails.logger.warn "the google drive folder '#{folder_name}' was not found."
+      return nil
+    end
 
     files.files.first.id
+  end
+
+  def get_service_account_json
+    File.new Rails.configuration.detalk['google_drive']['service_account_json'], File::RDONLY
   end
 end
