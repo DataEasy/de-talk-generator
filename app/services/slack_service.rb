@@ -30,7 +30,7 @@ class SlackService
           channels: Rails.configuration.detalk['slack']['channel'],
           as_user: false,
           file: Faraday::UploadIO.new(cover, 'image/png'),
-          title: "DE Talks ##{talk.number_formated} - #{talk.title}",
+          title: talk.title_formated,
           filename: "#{talk.title_for_cover_filename}.png",
           icon_emoji: ':de_bot:'
       )

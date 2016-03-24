@@ -2,7 +2,6 @@ require 'fileutils'
 
 class TalksController < ApplicationController
   before_action :load_cover_service
-  before_action :load_slack_service
   before_action :set_talk, only: [:show, :edit, :update, :destroy, :preview_publish, :publish, :preview_cover_image, :cancel]
   before_action :can_change, only: [:edit, :update, :destroy, :preview_publish, :publish]
 
@@ -109,7 +108,6 @@ class TalksController < ApplicationController
       if @talk.save
 
       ActiveSupport::Notifications.instrument(Detalk::Constants::NOTIFICATIONS_TALK_PUBLISHED, :talk_id => @talk.id)
-      @slack_service.send_new_detalk_published @talk
 
       redirect_to @talk, notice: t('messages.successfully_published', entity: Talk.model_name.human)
       else
@@ -135,7 +133,6 @@ class TalksController < ApplicationController
     @talk.number = number
 
     ActiveSupport::Notifications.instrument(Detalk::Constants::NOTIFICATIONS_TALK_CANCELED, :talk_id => @talk.id)
-    @slack_service.send_detalk_canceled @talk
 
     redirect_to talks_path, notice: t('messages.successfully_canceled', entity: Talk.model_name.human)
   end
@@ -192,9 +189,5 @@ class TalksController < ApplicationController
 
   def load_cover_service(service = CoverService.new)
     @cover_service ||= service
-  end
-
-  def load_slack_service(service = SlackService.new)
-    @slack_service ||= service
   end
 end
