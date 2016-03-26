@@ -3,7 +3,7 @@ require 'constants'
 ActiveSupport::Notifications.subscribe Detalk::Constants::NOTIFICATIONS_TALK_PUBLISHED do |name, start, finish, id, payload|
   if Rails.configuration.detalk['google_drive']['active']
     Rails.logger.debug("Enqueue CreateGoogleDriveFolderJob for talk: #{payload[:talk].title_formated}")
-    CreateGoogleDriveFolderJob.perform_later(payload[:talk].id)
+    PublishTalkOnGoogleDriveJob.perform_later(payload[:talk].id)
   end
 
   if Rails.configuration.detalk['slack']['active']

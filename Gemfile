@@ -31,7 +31,7 @@ gem 'acts-as-taggable-on', '3.5.0'
 gem 'slack-ruby-client', '0.6.0'
 gem 'google-api-client', '0.9'
 gem 'rails4-autocomplete', '1.1.1'
-gem 'sidekiq'
+gem 'sidekiq', '4.1.1'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

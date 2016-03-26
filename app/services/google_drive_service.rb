@@ -20,15 +20,34 @@ class GoogleDriveService
       parents: [folder_parent_id]
     }
 
-    file = @drive.create_file(file_metadata, fields: 'id')
+    @drive.create_file(file_metadata, fields: 'id') do |file, error|
+      if error
+        Rails.logger.error "Fail to upload cover #{file_destiny} to #{folder_id}.", error
+        return nil
+      end
 
-    file.id
+      return file.id
+    end
   end
 
   def delete_detalk_folder(item_id)
     @drive.delete_file(item_id, fields: 'id') if item_id
   rescue Exception => ex
     Rails.logger.error ex
+  end
+
+  def send_file_to_folder(file_name, file_destiny, content_type, folder_id)
+    file_metadata = { name: file_name, parents: [folder_id] }
+
+    @drive.create_file(file_metadata, fields: 'id', upload_source: file_destiny,
+                       content_type: content_type) do |file, error|
+        if error
+          Rails.logger.error "Fail to upload cover #{file_destiny} to #{folder_id}.", error
+          return nil
+        end
+
+        return file.id
+    end
   end
 
   private

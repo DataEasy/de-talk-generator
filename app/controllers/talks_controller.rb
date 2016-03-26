@@ -89,16 +89,10 @@ class TalksController < ApplicationController
 
     if @talk.save
       begin
-        filename = @cover_service.create_cover(@talk)
-
-        tmp_png_path = Rails.root.join('tmp', "#{filename}.png")
-        cover_path = Rails.root.join('public', 'images',  "#{@talk.title_for_cover_filename}.png")
-
-        FileUtils.cp tmp_png_path, cover_path
-        FileUtils.rm Rails.root.join('tmp', "#{filename}.svg")
-        FileUtils.rm tmp_png_path
+        @cover_service.publish_cover @talk
       rescue
         @talk.number = nil
+        @talk.published = false
         @talk.save!
 
         return redirect_to preview_publish_talk_url(@talk), notice: t('messages.talks.fail_publish')
