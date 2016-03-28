@@ -47,6 +47,7 @@ group :development, :test do
   gem 'byebug', '8.2.2'
   gem 'rspec-rails', '3.4.0'
   gem 'bullet', '~> 4.0'
+  gem 'rubocop', '0.39.0', require: false
 end
 
 group :development do

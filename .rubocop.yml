@@ -1,0 +1,17 @@
+# This is the configuration used to check the rubocop source code.
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  Exclude:
+    - 'vendor/**/*'
+    - 'spec/fixtures/**/*'
+    - 'tmp/**/*'
+    - db/schema.rb
+
+  Documentation:
+    Enabled: false
+
+  Rails:
+    Enabled: true
+
+  TargetRubyVersion: 2.2
