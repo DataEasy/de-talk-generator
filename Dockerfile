@@ -10,9 +10,9 @@ WORKDIR /detalk
 ADD . /detalk
 COPY ./docker/fonts/ /usr/local/share/fonts/
 
-ENV RAILS_ENV=development
+ENV RAILS_ENV=production
 
-RUN bundle install
-#RUN RAILS_ENV=production bundle exec rake assets:precompile --trace
+RUN bundle install && \
+    bundle exec rake assets:precompile --trace
 
 CMD ["rails","s","-b","0.0.0.0"]

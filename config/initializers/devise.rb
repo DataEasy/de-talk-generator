@@ -246,7 +246,8 @@ Devise.setup do |config|
   #
   config.warden do |manager|
     manager.intercept_401 = false
-    manager.default_strategies(scope: :user).unshift :ldap_authenticatable
+    # Uncomment the line below to enable LDAP authentication
+    # manager.default_strategies(scope: :user).unshift :ldap_authenticatable
   end
 
   # ==> Mountable engine configurations

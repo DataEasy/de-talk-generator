@@ -36,8 +36,10 @@ web:
   build: .
   ports:
     - "3000:3000"
-  volumes:
-    - .:/detalk
+  #volumes:
+    #- <path to detalk.yml on host>:/detalk/config/detalk.yml
+    #- <path to ServiceAccountFile.json on host>:/detalk/config/ServiceAccountFile.json
+    #- .:/detalk
   environment:
     - DETALK_DB_HOST=db
     - DETALK_DB=detalk

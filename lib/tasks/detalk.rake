@@ -1,3 +1,6 @@
+require 'google/apis/drive_v3'
+require 'detalk/google_drive/credential_manager'
+
 namespace :detalk do
   desc 'Create a user to authenticate without ldap'
   task create_user: :environment do
@@ -19,5 +22,22 @@ namespace :detalk do
     end
 
     puts "\n"
+  end
+
+  desc 'Update detalk config and add google drive folder id'
+  task get_google_drive_folder: :environment do
+    file_config_path = Rails.root.join('config', 'detalk.yml')
+    detalk_config = YAML.load_file file_config_path
+
+    drive = Google::Apis::DriveV3::DriveService.new
+    drive.authorization = DeTalk::GoogleDrive::CredentialManager.get_autorization
+
+    google_drive_folder = detalk_config[Rails.env]['google_drive']['folder_name']
+
+    files = drive.list_files(q: "name='#{google_drive_folder}'", spaces: 'drive')
+
+    detalk_config[Rails.env]['google_drive']['folder_id'] = files.files.first.id
+
+    File.open(file_config_path, 'w') { |f| YAML.dump(detalk_config, f) }
   end
 end

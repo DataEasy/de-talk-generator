@@ -1,38 +1,41 @@
-DE Talk Post Generator Tabajara
+DE Talk Manager
 ===============================
 
-# O script
+## O que a aplicação faz?
 
-Este script:
+1. Permite autenticação tanto por usuários criados no banco de dados, quanto via LDAP.
+2. Lê um template em `svg`, edita os campos de acordo com os dados informado no form e gera um `png` com a capa da DE Talk.
+3. Publica a DE Talk no Slack.
+4. Cria uma pasta da DE Talk numa pasta do Google Drive compartilhada com a aplicação e copia a imagem de capa para ela.
 
-1. Ele lê um template em `svg`, edita os campos de acordo com os argumentos passados, e gera um `png` para ser distribuído.
-2. Coloca tal `png` na pasta do Google Drive, a fim de ser sincronizado para a pasta padrão no Google Drive da empresa. ;-)
+Veja algumas screenshots [aqui](./docs/screenshots.md)
 
-## Utilização
+# Docker
 
-	./generate primeiroNome segundoNome titulo subtitulo data hora numeroDaDeTalk
+A aplicação é divida em container:
 
-## Exemplo
+* db - Banco de dados
+* redis - Servidor redis
+* sidekiq - Container que roda as tarefas assincronas
+* web - Aplicação
 
-Rodando o comando:
+## Instalação
 
-	./generate Luiz Gonzaga 'Como ficar milionário' 'Técnicas simples e garantidas' 15/02 17h 10
+```
+cp config/detalk.example.yml config/detalk.yml
 
-Transformará o template:
+docker-compose build --force-rm
 
-  ![Template](./docs/template.png)
+docker-compose run web rake db:create --rm
+docker-compose run web rake db:migrate --rm
+docker-compose run web rake db:seed --rm
 
-em:
+docker-compose up -d
+```
 
-  ![Resultado](./docs/result.png)
-
-# Observações
-
-* Note que argumentos que não possuem espaços dispensam as aspas.
-* O Script pressupõe que sua pasta do Google drive seja `~/Google Drive/`, e que você tenha a pasta `Eventos/DE Talks` compartilhada com você (se não a tem ainda, peça que compartilhem-na com você).
-* Se no seu sistema a pasta do Google Drive estiver em outro lugar, edite o script antes de executá-lo.
+Informações detalhadas sobre a configuração, acesse [aqui](./docs/configuration.md)
 
 # Dependências
 
-* `sed`. Obs: se você usa o OSX deverá instalar o `gsed` (GNU sed)
-* `inkscape`. Deve estar instalado na máquina e com no PATH do sistema
+* docker
+* docker-compose
