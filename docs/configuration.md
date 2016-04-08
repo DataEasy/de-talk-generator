@@ -6,8 +6,6 @@ DE Talk Manager | Configurações
 Inicialmente o app só faz o gerenciamento das DE Talks. Para fazer mais coisas, é necessário alterar o
 arquivo de configuração detalk.yml (criado a partir do [detalk.example.yml](../config/detalk.example.yml)).
 
-Use volume do [docker-compose.yml](../docker-compose.yml) para montar o arquivo de configuração na aplicação.
-
 ## Autenticação
 
 Por padrão é feita via banco de dados com o usuário padrão **demo/demo**, mas também é possível fazer via LDAP.
@@ -39,13 +37,13 @@ fazer login com uma conta google.
 ### Como gerar o arquivo json service account
 
 * Vá no [Developers Console](https://console.developers.google.com/project) e crie um novo projeto
-* Você será redirecionado para o API Manager, procure pela `Drive API`, clique nele e habilite
+* Você será redirecionado para o *API Manager*, procure por `Drive API`, clique no nome e habilite
 * Agora vá em *Credentias*, *Create credentials*, selecione *Service account key*
-* Em *Service account*, selecione *New service account*, informe o *Service account name*. No Key type, selecione JSON e crie.
-* Então um arquivo do tipo <ServiceAccountName>-<Pequeno hash>.json será baixado (ou avisando pra baixar, vai depender do browser),
+* Em *Service account*, selecione *New service account*, informe o *Service account name*. No *Key type*, selecione JSON e crie.
+* Um arquivo do tipo <ServiceAccountName>-<Pequeno hash>.json será baixado (ou avisando pra você baixar, vai depender do browser),
 é esse arquivo que à aplicação vai usar para autenticar e conseguir criar as pastas no Google Drive.
 * Agora, na tela de Credentials, clique em *Manage service accounts*.
-* No Manage service accounts, você vai ver a sua credential criada. Na coluna *Service account ID* possui o um email,
+* No Manage service accounts, você vai ver a sua credential criada. Na coluna *Service account ID* possui um email,
 é com esse email que você vai compartilhar a pasta onde vai ficar as pasta da DE Talk, então guarde-o.
 
 Use o volume no docker-compose.yml para montar o arquivo do service account gerado pelo Google, depois informe o caminho

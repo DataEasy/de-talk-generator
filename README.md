@@ -19,23 +19,21 @@ A aplicação é divida em container:
 * sidekiq - Container que roda as tarefas assincronas
 * web - Aplicação
 
-## Instalação
+## Execução
+
+Caso queira fazer alguma configuração antes de criar a imagem, crie o arquivo (o script o fará se você fizer nada)
+`config/detalk.example.yml`
+baseado no `config/detalk.example.yml` e execute `bash init.sh` ou use volume
+do [docker-compose.yml](docker-compose.yml) para montar o arquivo de configuração no container.
 
 ```
-cp config/detalk.example.yml config/detalk.yml
-
-docker-compose build --force-rm
-
-docker-compose run web rake db:create --rm
-docker-compose run web rake db:migrate --rm
-docker-compose run web rake db:seed --rm
-
-docker-compose up -d
+bash init.sh
 ```
 
 Informações detalhadas sobre a configuração, acesse [aqui](./docs/configuration.md)
 
 # Dependências
 
+* sed
 * docker
 * docker-compose

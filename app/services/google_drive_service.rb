@@ -20,13 +20,22 @@ class GoogleDriveService
       parents: [folder_parent_id]
     }
 
-    @drive.create_file(file_metadata, fields: 'id') do |file, error|
-      if error
-        Rails.logger.error "Fail to upload cover #{file_destiny} to #{folder_id}.", error
+    @drive.create_file(file_metadata, fields: 'id') do |folder, error_folder|
+      if error_folder
+        Rails.logger.error "Fail to create folder #{folder_name}.", error_folder
         return nil
       end
 
-      return file.id
+      user_permission = { type: 'anyone', role: 'writer' }
+
+      @drive.create_permission(folder.id, user_permission, fields: 'id') do |folder_permission, error_permission|
+        if error_permission
+          Rails.logger.error "Fail to set perssion to folder #{folder_name}-#{folder.id}.", error_permission
+          return nil
+        end
+
+        return folder.id
+      end
     end
   end
 

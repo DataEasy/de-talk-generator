@@ -14,22 +14,7 @@ db:
 redis:
   image: redis
   ports:
-    - "6379"
-
-sidekiq:
-  build: .
-  volumes:
-    - .:/detalk
-  command: bundle exec sidekiq
-  environment:
-    - DETALK_DB_HOST=db
-    - DETALK_DB=detalk
-    - DETALK_DB_USER=detalk
-    - DETALK_DB_PASSWORD=detalk
-    - JOB_WORKER_URL=redis://redis:6379/0
-  links:
-    - db
-    - redis
+    - "63790:6379"
 
 web:
   container_name: 'detalk_web'
@@ -37,15 +22,34 @@ web:
   ports:
     - "3000:3000"
   #volumes:
-    #- <path to detalk.yml on host>:/detalk/config/detalk.yml
-    #- <path to ServiceAccountFile.json on host>:/detalk/config/ServiceAccountFile.json
-    #- .:/detalk
+      #- <path to detalk.yml on host>:/detalk/config/detalk.yml
+      #- <path to ServiceAccountFile.json on host>:/detalk/config/ServiceAccountFile.json
+      #- .:/detalk
   environment:
     - DETALK_DB_HOST=db
     - DETALK_DB=detalk
     - DETALK_DB_USER=detalk
     - DETALK_DB_PASSWORD=detalk
+    - RAILS_SERVE_STATIC_FILES=true # Enable rails serves assets from /public folder
+    - SECRET_KEY_BASE={{PRODUCTION_SECRET_KEY}}
     - JOB_WORKER_URL=redis://redis:6379/0
+  links:
+    - db
+    - redis
+
+sidekiq:
+  image: detalk_web
+  container_name: 'detalk_sidekiq'
+  command: bundle exec sidekiq
+  environment:
+    - DETALK_DB_HOST=db
+    - DETALK_DB=detalk
+    - DETALK_DB_USER=detalk
+    - DETALK_DB_PASSWORD=detalk
+    - SECRET_KEY_BASE={{PRODUCTION_SECRET_KEY}}
+    - JOB_WORKER_URL=redis://redis:6379/0
+  volumes_from:
+   - web
   links:
     - db
     - redis
