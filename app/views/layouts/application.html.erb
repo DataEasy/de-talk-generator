@@ -27,6 +27,7 @@
           <span class="icon-bar"></span>
         </button>
         <%= link_to t('title.system_title'), home_path, class: 'navbar-brand' %>
+        <p class="navbar-text"><small><%= show_app_version %></small></p>
       </div>
       <% if user_signed_in? %>
       <div id="navbar" class="collapse navbar-collapse">
