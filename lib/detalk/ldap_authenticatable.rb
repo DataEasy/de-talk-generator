@@ -72,5 +72,3 @@ module Devise
     end
   end
 end
-
-Warden::Strategies.add(:ldap_authenticatable, Devise::Strategies::LdapAuthenticatable)
