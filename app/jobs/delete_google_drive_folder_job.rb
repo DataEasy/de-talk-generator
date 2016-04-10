@@ -9,7 +9,7 @@ class DeleteGoogleDriveFolderJob < ActiveJob::Base
     GoogleDriveService.new.delete_detalk_folder(talk.folder_id)
 
     talk.update(folder_id: nil)
-  rescue Exception => ex
+  rescue StandardError => ex
     Rails.logger.error ex
   end
 end

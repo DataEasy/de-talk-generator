@@ -15,7 +15,7 @@ class Talk < ActiveRecord::Base
   acts_as_taggable
 
   def title_for_cover_filename
-    "de-talk-#{number_formated}-#{title.downcase.gsub(/\s/,'-')}"
+    "de-talk-#{number_formated}-#{title.downcase.gsub(/\s/, '-')}"
   end
 
   def title_formated
@@ -23,7 +23,7 @@ class Talk < ActiveRecord::Base
   end
 
   def number_formated
-    number ? '%03d' % number : ''
+    number ? format('%03d', number) : ''
   end
 
   def date_str=(date_str)

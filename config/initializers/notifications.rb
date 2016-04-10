@@ -1,6 +1,6 @@
 require 'constants'
 
-ActiveSupport::Notifications.subscribe Detalk::Constants::NOTIFICATIONS_TALK_PUBLISHED do |name, start, finish, id, payload|
+ActiveSupport::Notifications.subscribe Detalk::Constants::NOTIFICATIONS_TALK_PUBLISHED do |_name, _start, _finish, _id, payload|
   if Rails.configuration.detalk['google_drive']['active']
     Rails.logger.debug("Enqueue CreateGoogleDriveFolderJob for talk: #{payload[:talk].title_formated}")
     PublishTalkOnGoogleDriveJob.perform_later(payload[:talk].id)
@@ -12,7 +12,7 @@ ActiveSupport::Notifications.subscribe Detalk::Constants::NOTIFICATIONS_TALK_PUB
   end
 end
 
-ActiveSupport::Notifications.subscribe Detalk::Constants::NOTIFICATIONS_TALK_CANCELED do |name, start, finish, id, payload|
+ActiveSupport::Notifications.subscribe Detalk::Constants::NOTIFICATIONS_TALK_CANCELED do |_name, _start, _finish, _id, payload|
   if Rails.configuration.detalk['google_drive']['active']
     Rails.logger.debug("Enqueue DeleteGoogleDriveFolderJob for talk: #{payload[:talk].title_formated}")
     DeleteGoogleDriveFolderJob.perform_later(payload[:talk].id)

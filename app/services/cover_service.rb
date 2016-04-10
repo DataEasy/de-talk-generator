@@ -8,7 +8,7 @@ class CoverService
     filename = create_cover(talk)
 
     tmp_png_path = get_temp_path_for "#{filename}.png"
-    cover_path = Rails.root.join(COVER_DESTINY_FOLDER,  "#{talk.title_for_cover_filename}.png")
+    cover_path = Rails.root.join(COVER_DESTINY_FOLDER, "#{talk.title_for_cover_filename}.png")
 
     FileUtils.cp tmp_png_path, cover_path
     FileUtils.rm get_temp_path_for "#{filename}.svg"

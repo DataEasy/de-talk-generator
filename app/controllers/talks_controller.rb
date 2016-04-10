@@ -91,9 +91,7 @@ class TalksController < ApplicationController
       begin
         @cover_service.publish_cover @talk
       rescue
-        @talk.number = nil
-        @talk.published = false
-        @talk.save!
+        @talk.update!(number: nil, published: false)
 
         return redirect_to preview_publish_talk_url(@talk), notice: t('messages.talks.fail_publish')
       end
@@ -115,7 +113,7 @@ class TalksController < ApplicationController
   def cancel
     return redirect_to talks_path, notice: t('messages.talks.already_canceled') unless @talk.published
 
-    FileUtils.rm(Rails.root.join('public', 'images',  @talk.filename), force: true)
+    FileUtils.rm(Rails.root.join('public', 'images', @talk.filename), force: true)
 
     number = @talk.number
 
@@ -154,6 +152,7 @@ class TalksController < ApplicationController
   end
 
   private
+
   # Use callbacks to share common setup or constraints between actions.
   def set_talk
     @talk = Talk.where(id: params[:id], user: current_user).take
@@ -168,12 +167,12 @@ class TalksController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def talk_params
     params.require(:talk).permit(:title, :subtitle, :date_str, :time, :filename,
-      :first_name, :last_name, :number, :target, {tag_list: []})
+                                 :first_name, :last_name, :number, :target, { tag_list: [] })
   end
 
   def json_for_autocomplete(items, method, extra_data=[])
     items.collect do |item|
-      {id: item.send(method), label: item.send(method)}
+      { id: item.send(method), label: item.send(method) }
     end
   end
 

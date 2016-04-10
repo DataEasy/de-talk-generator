@@ -9,7 +9,7 @@ class PublishTalkOnGoogleDriveJob < ActiveJob::Base
 
     upload_cover_to_drive_folder(talk, folder_id, service) if folder_id
 
-  rescue Exception => ex
+  rescue StandardError => ex
     Rails.logger.error ex
   end
 
@@ -22,7 +22,7 @@ class PublishTalkOnGoogleDriveJob < ActiveJob::Base
 
     talk.update(folder_id: folder_id)
 
-    return folder_id
+    folder_id
   end
 
   def upload_cover_to_drive_folder(talk, folder_id, google_drive_service)

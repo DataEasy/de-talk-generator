@@ -101,3 +101,6 @@ Style/StringLiterals:
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 Style/TrailingBlankLines:
   Enabled: false
+
+Style/BlockComments:
+  Enabled: false

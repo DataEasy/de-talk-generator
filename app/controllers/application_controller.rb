@@ -13,21 +13,21 @@ class ApplicationController < ActionController::Base
   def set_locale
     logger.debug "* Accept-Language: #{request.env['HTTP_ACCEPT_LANGUAGE']}"
 
-    I18n.locale =  get_client_locale
+    I18n.locale = client_locale
 
     logger.debug "* Locale set to '#{I18n.locale}'"
   end
 
   private
 
-  def get_client_locale
+  def client_locale
     extract_locale = extract_locale_from_accept_language_header
 
     available_locales = I18n.available_locales.map(&:to_s)
 
     locale_detected = available_locales.find { |i| i[/#{extract_locale}*/] }
 
-    locale_detected ||= I18n.default_locale
+    locale_detected || I18n.default_locale
   end
 
   def extract_locale_from_accept_language_header
