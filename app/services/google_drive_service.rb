@@ -1,7 +1,11 @@
 require 'google/apis/drive_v3'
 
 class GoogleDriveService
+  include ServiceIntegrationHelper
+
   def initialize
+    check_configuration!
+
     scope = ['https://www.googleapis.com/auth/drive']
     authorization = Google::Auth::ServiceAccountCredentials.make_creds(json_key_io: get_service_account_json, scope: scope)
 
@@ -87,5 +91,9 @@ class GoogleDriveService
 
   def get_service_account_json
     File.new Rails.configuration.detalk['google_drive']['service_account_json'], File::RDONLY
+  end
+
+  def check_configuration!
+    check_config_options! 'google_drive', %w(shared_folder service_account_json)
   end
 end

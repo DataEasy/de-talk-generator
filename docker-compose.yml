@@ -49,7 +49,7 @@ sidekiq:
     - SECRET_KEY_BASE={{PRODUCTION_SECRET_KEY}}
     - JOB_WORKER_URL=redis://redis:6379/0
   volumes_from:
-   - web
+    - web
   links:
     - db
     - redis

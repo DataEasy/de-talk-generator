@@ -7,5 +7,7 @@ class PublishNewTalkOnSlackJob < ActiveJob::Base
     Rails.logger.debug("Publishing new talk on slack: #{talk.title_formated}")
 
     SlackService.new.send_new_detalk_published talk
+  rescue Exception => ex
+    Rails.logger.error ex
   end
 end

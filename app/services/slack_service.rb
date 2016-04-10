@@ -1,6 +1,16 @@
 require 'slack-ruby-client'
 
 class SlackService
+  include ServiceIntegrationHelper
+
+  def initialize
+    check_configuration!
+
+    Slack.configure do |config|
+      config.token = Rails.configuration.detalk['slack']['token']
+    end
+  end
+
   def send_detalk_canceled(talk_title_formated)
     unless Rails.configuration.detalk['slack']['channel']
       Rails.logger.warn 'The channel was not specified.'
@@ -58,5 +68,11 @@ class SlackService
     rescue Exception => error
       Rails.logger.error error
     end
+  end
+
+  private
+
+  def check_configuration!
+    check_config_options! 'slack', %w(token channel message message_talk_canceled)
   end
 end
