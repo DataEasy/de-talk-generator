@@ -58,6 +58,8 @@ end
 
 group :test do
   gem 'factory_girl_rails'
+  gem 'faker', '1.6.1'
+  gem 'webmock', '1.22.6'
   gem 'simplecov', '0.11.1', require: false
   gem 'database_cleaner'
 end

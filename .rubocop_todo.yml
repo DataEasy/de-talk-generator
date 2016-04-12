@@ -104,3 +104,6 @@ Style/TrailingBlankLines:
 
 Style/BlockComments:
   Enabled: false
+
+Style/SignalException:
+  Enabled: false
