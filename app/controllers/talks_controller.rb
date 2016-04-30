@@ -75,6 +75,7 @@ class TalksController < ApplicationController
     end
   end
 
+  # GET /talks/1/preview_publish
   def preview_publish
     @talk.number = Talk.published.maximum(:number).to_i + 1
 
@@ -83,6 +84,7 @@ class TalksController < ApplicationController
     end
   end
 
+  # PATCH /talks/1/publish
   def publish
     @talk.number = Talk.published.maximum(:number).to_i + 1
     @talk.published = true
@@ -110,6 +112,7 @@ class TalksController < ApplicationController
     end
   end
 
+  # GET /talks/1/cancel
   def cancel
     return redirect_to talks_path, notice: t('messages.talks.already_canceled') unless @talk.published
 
@@ -125,6 +128,7 @@ class TalksController < ApplicationController
     redirect_to talks_path, notice: t('messages.successfully_canceled', entity: Talk.model_name.human)
   end
 
+  # GET /talks/1/preview_cover_image
   def preview_cover_image
     @talk.number = Talk.where(published: true).maximum(:number).to_i + 1
     filename = @cover_service.create_cover(@talk)
@@ -139,6 +143,7 @@ class TalksController < ApplicationController
     send_data contents, type: 'image/png', disposition: 'inline'
   end
 
+  # GET /talks/monthly.json
   def monthly
     date_start = Date.parse(params[:start])
     date_end = Date.parse(params[:end])
@@ -167,7 +172,7 @@ class TalksController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def talk_params
     params.require(:talk).permit(:title, :subtitle, :date_str, :time, :filename,
-                                 :first_name, :last_name, :number, :target, { tag_list: [] })
+                                 :first_name, :last_name, :number, :target, tag_list: [])
   end
 
   def json_for_autocomplete(items, method, extra_data=[])

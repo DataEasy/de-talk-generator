@@ -8,11 +8,13 @@ FactoryGirl.define do
     time { Faker::Time.forward(30, :afternoon) }
     target { Faker::Team.name }
 
+    association :user, factory: :user
+
     factory :talk_published do
       number { Faker::Number.between(1, 999) }
       published true
       folder_id { SecureRandom.uuid }
-      filename { title_for_cover_filename }
+      filename { "#{title_for_cover_filename}.png" }
     end
   end
 end
