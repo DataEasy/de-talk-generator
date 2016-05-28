@@ -20,7 +20,7 @@ class GoogleDriveService
 
     @drive.create_file(file_metadata, fields: 'id') do |folder, error_folder|
       if error_folder
-        Rails.logger.error "Fail to create folder #{folder_name}.", error_folder
+        Rails.logger.error "Fail to create folder #{folder_name}.\n#{error_folder}"
         return nil
       end
 
@@ -28,7 +28,7 @@ class GoogleDriveService
 
       @drive.create_permission(folder.id, user_permission, fields: 'id') do |_folder_permission, error_permission|
         if error_permission
-          Rails.logger.error "Fail to set perssion to folder #{folder_name}-#{folder.id}.", error_permission
+          Rails.logger.error "Fail to set perssion to folder #{folder_name}-#{folder.id}.\n#{error_permission}"
           return nil
         end
 
@@ -43,12 +43,12 @@ class GoogleDriveService
     Rails.logger.error ex
   end
 
-  def send_file_to_folder(file_name, file_destiny, content_type, folder_id)
+  def send_file_to_folder(file_name, file_source_path, content_type, folder_id)
     file_metadata = { name: file_name, parents: [folder_id] }
 
-    @drive.create_file(file_metadata, fields: 'id', upload_source: file_destiny, content_type: content_type) do |file, error|
+    @drive.create_file(file_metadata, fields: 'id', upload_source: file_source_path, content_type: content_type) do |file, error|
         if error
-          Rails.logger.error "Fail to upload cover #{file_destiny} to #{folder_id}.", error
+          Rails.logger.error "Fail to upload cover #{file_name} to #{folder_id}.\n#{error}"
           return nil
         end
 
