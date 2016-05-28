@@ -66,8 +66,8 @@ RSpec.describe TalksController, type: :controller do
   describe 'GET #preview_publish' do
     context 'when date and time are ok' do
       it 'should render withou warning' do
-        create(:talk_published, number: 1, date: DateTime.now + 1.day, user: subject.current_user)
-        talk = create(:talk, number: nil, date: DateTime.now + 2.day, user: subject.current_user)
+        create(:talk_published, number: 1, date_str: I18n.l(DateTime.now + 1.day, format: :default), user: subject.current_user)
+        talk = create(:talk, number: nil, date_str: I18n.l(DateTime.now + 2.day, format: :default), user: subject.current_user)
 
         next_number_expected = Talk.published.maximum(:number).to_i + 1
 

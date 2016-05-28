@@ -46,8 +46,8 @@ class Talk < ActiveRecord::Base
   end
 
   def validate_date_greater_than_today
-    if !@date_str_invalid && date.is_a?(Date)
-      errors.add(:date, :greater_than_today, value: I18n.l(date, format: :default)) unless date > DateTime.now
-    end
+    return if @date_str_invalid
+
+    errors.add(:date, :greater_than_today, value: I18n.l(date, format: :default)) unless date > DateTime.now.to_date
   end
 end

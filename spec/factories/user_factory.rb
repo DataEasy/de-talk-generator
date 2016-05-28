@@ -4,7 +4,7 @@ FactoryGirl.define do
     password 'f4k3p455w0rd'
     password_confirmation 'f4k3p455w0rd'
 
-    factory :another_user do
+    factory :another_user, class: User do
       username { Faker::Internet.user_name }
     end
   end
