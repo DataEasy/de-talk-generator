@@ -23,7 +23,7 @@ class SlackService
       message = Rails.configuration.detalk['slack']['message_talk_canceled'] % talk_title_formated
 
       client.chat_postMessage(channel: Rails.configuration.detalk['slack']['channel'], text: message,
-                              as_user: false, icon_emoji: ':de_bot:')
+                              as_user: false, username: 'slackbot')
     rescue StandardError => error
       Rails.logger.error error
     end
@@ -44,14 +44,16 @@ class SlackService
 
       client.files_upload(channels: Rails.configuration.detalk['slack']['channel'], as_user: false,
                           file: Faraday::UploadIO.new(cover, 'image/png'), title: talk.title_formated,
-                          filename: "#{talk.title_for_cover_filename}.png", icon_emoji: ':de_bot:')
+                          filename: "#{talk.title_for_cover_filename}.png")
 
       cover.close
 
       Rails.logger.debug 'Sending message.'
 
+      message = Rails.configuration.detalk['slack']['message'] % talk.title_formated
+
       client.chat_postMessage(channel: Rails.configuration.detalk['slack']['channel'], as_user: false,
-                              text: Rails.configuration.detalk['slack']['message'], icon_emoji: ':de_bot:')
+                              username: 'slackbot', text: message)
     rescue StandardError => error
       Rails.logger.error error
     end
