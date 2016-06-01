@@ -7,5 +7,6 @@ cache: bundler
 
 before_script:
   - cp ./config/detalk.example.yml ./config/detalk.yml
+  - bundle rake db:migrate RAILS_ENV=test
 
 script: bundle exec rspec spec
