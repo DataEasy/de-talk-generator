@@ -1,0 +1,27 @@
+en:
+  title:
+    system_title: DE Talks
+    login: Login
+    actions: Actions
+    new: "New %{entity}"
+    editing: "Editing %{entity}"
+    preview: "Preview %{entity}"
+    show: "Show %{entity}"
+  menu:
+    home: Home
+    my_talks: My Talks
+    exit: Exit
+  buttons:
+    close: Close
+    login: Login
+    new: "New %{entity}"
+    remove: Remove
+    edit: Edit
+    show: Show
+    cancel: Cancel
+    cancel_talk: Cancel DE Talk
+    publish: Publish
+    create: Create
+    update_preview: Update preview
+    update: Update
+    back_to_list: Back to list

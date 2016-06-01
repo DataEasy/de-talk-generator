@@ -1,0 +1,14 @@
+en:
+  views:
+    talks:
+      datepicker_form: 'yyyy-mm-dd'
+      datepicker_language: 'en'
+      select2_language: 'en'
+      hints:
+        published: "Published"
+        waiting_publishing: "Waiting for publishing"
+        generating_image: "Generating Image"
+        fail_load_html: "Fail to try generate cover.<br/> Try again."
+      titles:
+        preview_cover: "DE Talk #%{talk_number} - Cover Preview"
+        my_detalks: "My DE Talks"

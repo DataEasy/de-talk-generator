@@ -1,0 +1,71 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#"><%= t 'views.talks.titles.my_detalks' %></a></div>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+         <%= link_to new_talk_path do %>
+          <i class="glyphicon glyphicon-plus"></i>
+          <%= t('buttons.new',  entity: Talk.model_name.human) %>
+         <% end %>
+        </li>
+      </ul>
+  </div>
+</nav>
+
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th width="30">#</th>
+      <th><%= t 'activerecord.attributes.talk.title' %></th>
+      <th><%= t 'activerecord.attributes.talk.subtitle' %></th>
+      <th width="80" class="text-center"><%= t 'activerecord.attributes.talk.date' %></th>
+      <th width="50" class="text-center"><%= t 'activerecord.attributes.talk.time' %></th>
+      <th width="50" class="text-center"><%= t 'activerecord.attributes.talk.published' %></th>
+      <th width="130" class="text-center"><%= t 'title.actions' %></th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @talks.each do |talk| %>
+    <tr>
+      <td><%= talk.number_formated %></td>
+      <td><%= talk.title %></td>
+      <td><%= talk.subtitle %></td>
+      <td class="text-center"><%= talk.date_str %></td>
+      <td class="text-center"><%= l talk.time, format: :very_short %></td>
+      <td class="text-center">
+        <% if talk.published %>
+            <i class="glyphicon glyphicon-ok text-success" title="<%= t('views.talks.hints.published') %>"></i>
+        <% else %>
+            <i class="glyphicon glyphicon-time text-warning"
+               title="<%= t('views.talks.hints.waiting_publishing') %>"></i>
+        <% end %>
+      </td>
+      <td class="text-center">
+        <% unless talk.published %>
+            <%= link_to preview_publish_talk_path(talk), class: 'btn btn-xs btn-success', title: t('buttons.publish') do %>
+                <i class="glyphicon glyphicon-bullhorn"></i>
+            <% end %>
+        <% else %>
+            <%= link_to cancel_talk_path(talk), class: 'btn btn-xs btn-danger', title: t('buttons.cancel_talk'),
+                        data: { confirm: t('messages.are_you_sure') } do %>
+                <i class="glyphicon glyphicon-minus"></i>
+            <% end %>
+        <% end %>
+        <%= link_to talk, class: 'btn btn-xs btn-default', title: t('buttons.show') do %>
+            <i class="glyphicon glyphicon-eye-open"></i>
+        <% end %>
+        <% unless talk.published %>
+        <%= link_to edit_talk_path(talk), class: 'btn btn-xs btn-default', title: t('buttons.edit') do %>
+            <i class="glyphicon glyphicon-pencil"></i>
+        <% end %>
+        <%= link_to talk, method: :delete, class: 'btn btn-xs btn-danger', title: t('buttons.remove'),
+                    data: { confirm: t('messages.are_you_sure') } do %>
+            <i class="glyphicon glyphicon-trash"></i>
+        <% end %>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

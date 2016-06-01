@@ -1,0 +1,26 @@
+en:
+  activerecord:
+    models:
+      talk:
+        one: Talk
+        other: Talks
+    errors:
+      models:
+        talk:
+          attributes:
+            date:
+              taken: "There's a DE Talk published at this date and hour"
+              greater_than_today: "%{value} must be greater than today"
+    attributes:
+      user:
+        first_name: First name
+        last_name: Last name
+        number: Number
+        title: Title
+        subtitle: Subtitle
+        date: Date
+        date_str: Date
+        time: Time
+        target: Target
+        tag_list: Tag list
+        published: Published

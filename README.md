@@ -1,38 +1,41 @@
-DE Talk Post Generator Tabajara
+[![Build Status](https://travis-ci.org/DataEasy/de-talk-generator.svg?branch=master)](https://travis-ci.org/DataEasy/de-talk-generator)
+    
+DE Talk Manager
 ===============================
 
-# O script
+## O que a aplicação faz?
 
-Este script:
+1. Permite autenticação tanto por usuários criados no banco de dados, quanto via LDAP.
+2. Lê um template em `svg`, edita os campos de acordo com os dados informado no form e gera um `png` com a capa da DE Talk.
+3. Publica a DE Talk no Slack.
+4. Cria uma pasta da DE Talk numa pasta do Google Drive compartilhada com a aplicação e copia a imagem de capa para ela.
 
-1. Ele lê um template em `svg`, edita os campos de acordo com os argumentos passados, e gera um `png` para ser distribuído.
-2. Coloca tal `png` na pasta do Google Drive, a fim de ser sincronizado para a pasta padrão no Google Drive da empresa. ;-)
+Veja algumas screenshots [aqui](./docs/screenshots.md)
 
-## Utilização
+# Docker
 
-	./generate primeiroNome segundoNome titulo subtitulo data hora numeroDaDeTalk
+A aplicação é divida em container:
 
-## Exemplo
+* db - Banco de dados
+* redis - Servidor redis
+* sidekiq - Container que roda as tarefas assincronas
+* web - Aplicação
 
-Rodando o comando:
+## Execução
 
-	./generate Luiz Gonzaga 'Como ficar milionário' 'Técnicas simples e garantidas' 15/02 17h 10
+Caso queira fazer alguma configuração antes de criar a imagem, crie o arquivo (o script o fará se você fizer nada)
+`config/detalk.example.yml`
+baseado no `config/detalk.example.yml` e execute `bash init.sh` ou use volume
+do [docker-compose.yml](docker-compose.yml) para montar o arquivo de configuração no container.
 
-Transformará o template:
+```
+bash init.sh
+```
 
-  ![Template](./docs/template.png)
-
-em:
-
-  ![Resultado](./docs/result.png)
-
-# Observações
-
-* Note que argumentos que não possuem espaços dispensam as aspas.
-* O Script pressupõe que sua pasta do Google drive seja `~/Google Drive/`, e que você tenha a pasta `Eventos/DE Talks` compartilhada com você (se não a tem ainda, peça que compartilhem-na com você).
-* Se no seu sistema a pasta do Google Drive estiver em outro lugar, edite o script antes de executá-lo.
+Informações detalhadas sobre a configuração, acesse [aqui](./docs/configuration.md)
 
 # Dependências
 
-* `sed`. Obs: se você usa o OSX deverá instalar o `gsed` (GNU sed)
-* `inkscape`. Deve estar instalado na máquina e com no PATH do sistema
+* sed
+* docker
+* docker-compose

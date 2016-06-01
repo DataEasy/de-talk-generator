@@ -1,0 +1,26 @@
+"pt-br":
+  activerecord:
+    models:
+      talk:
+        one: Talk
+        other: Talks
+    errors:
+      models:
+        talk:
+          attributes:
+            date:
+              taken: "Já existe uma DE Talk publicada para esta data e hora"
+              greater_than_today: "%{value} tem que ser maior que hoje"
+    attributes:
+      talk:
+        first_name: Primeiro Nome
+        last_name: Último Nome
+        number: Número
+        title: Título
+        subtitle: Subtítulo
+        date: Data
+        date_str: Data
+        time: Hora
+        target: Alvos
+        tag_list: Lista de Tags
+        published: Publicada

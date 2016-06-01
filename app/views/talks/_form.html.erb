@@ -1,0 +1,94 @@
+<%= render 'shared/validation_errors', model_instance: @talk %>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+      <%= f.label :first_name %>
+      <%= f.text_field :first_name, class: 'form-control', maxlength: 10 %>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <%= f.label :last_name %>
+      <%= f.text_field :last_name, class: 'form-control', maxlength: 10 %>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+      <%= f.label :title %>
+      <%= f.text_field :title, class: 'form-control', maxlength: 30 %>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <%= f.label :subtitle %>
+      <%= f.text_field :subtitle, class: 'form-control', maxlength: 45 %>
+    </div>
+  </div>
+</div>
+<div class="form-group">
+  <%= f.label :tag_list %>
+  <%= f.select('tag_list', @tags_most_used, {}, multiple: true, class: 'form-control select2', style: 'width: 100%;') %>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="form-group">
+      <%= f.label :target %>
+      <%= f.text_field :target, class: 'form-control', maxlength: 65 %>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <%= f.label :date %>
+      <div class="input-group">
+        <div class="input-group-addon">
+          <i class="glyphicon glyphicon-calendar"></i>
+        </div>
+        <%= f.text_field :date_str, class: 'form-control pull-right datepicker' %>
+      </div><!-- /.input group -->
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <%= f.label :time %>
+      <%= f.text_field :time, class: 'form-control timepicker', data: {inputmask: "'mask': '99:99'", mask:''} %>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  $(".select2").select2({
+      language: "<%= t 'views.talks.select2_language' %>",
+      ajax: {
+          url: '<%= autocomplete_tag_name_talks_path %>',
+          dataType: 'json',
+          delay: 250,
+          data: function (params) {
+              return { term: params.term }; // search term
+          },
+          processResults: function (data, params) {
+              return { results: data };
+          },
+          cache: true
+      },
+      minimumInputLength: 2,
+      templateSelection: function(data, container){
+          return data.label || data.text;
+      },
+      templateResult: function (data) {
+          return data.label || data.text;
+      },
+      tags: true
+  });
+
+  $("[data-mask]").inputmask();
+
+  $.fn.datepicker.defaults.format = "<%= t 'views.talks.datepicker_form' %>";
+  $('.datepicker').datepicker({
+      language: "<%= t 'views.talks.datepicker_language' %>"
+  });
+});
+</script>

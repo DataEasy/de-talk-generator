@@ -1,0 +1,38 @@
+production:
+  google_drive:
+    active: # Write 'true' if you want active
+    shared_folder: # You need to create a folder and share with the application(It'll access using service account)
+    service_account_json: # full json file path inside of the container
+  ldap: # See some examples on http://www.rubydoc.info/gems/net-ldap/Net/LDAP
+    host:
+    port:
+    username:
+    password:
+    search:
+      base: # Tree-Base
+      filter: # Filter used to find the user. Ex.: "(uid=%s)", where '%s' will be past the username
+  slack:
+    active: # Write 'true' if you want active
+    channel: # Channel name using #<channel name>
+    token: # API token
+    message: # Message sent when talk has been published. The DE Talk name will be past as param (%s)
+    message_talk_canceled: # Message sent when talk has been canceled. The DE Talk name will be past as param (%s)
+development:
+  google_drive:
+    active:
+    shared_folder:
+    service_account_json:
+  ldap:
+    host:
+    port:
+    username:
+    password:
+    search:
+      base:
+      filter:
+  slack:
+    active:
+    channel:
+    token:
+    message:
+    message_talk_canceled:

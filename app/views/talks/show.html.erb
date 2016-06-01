@@ -1,0 +1,94 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#"><%= t('title.show', entity: Talk.model_name.human) %></a></div>
+  </div>
+</nav>
+
+<div class="row">
+  <div class="col-xs-7">
+    <%= form_for(:talk) do |f| %>
+    <div class="row">
+      <div class="col-xs-6">
+        <div class="form-group">
+          <%= f.label :first_name %>
+          <%= f.text_field :first_name, class: 'form-control', disabled: true %>
+        </div>
+      </div>
+      <div class="col-xs-6">
+        <div class="form-group">
+          <%= f.label :last_name %>
+          <%= f.text_field :last_name, class: 'form-control', disabled: true %>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-9">
+        <div class="form-group">
+          <%= f.label :title %>
+          <%= f.text_field :title, class: 'form-control', disabled: true %>
+        </div>
+      </div>
+      <div class="col-xs-3">
+        <div class="form-group">
+          <%= f.label :number %>
+          <%= text_field :talk, :number, value: @talk.number ? @talk.number_formated : '', class: 'form-control', disabled: true %>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :subtitle %>
+      <%= f.text_field :subtitle, class: 'form-control', disabled: true %>
+    </div>
+    <div class="form-group">
+      <%= f.label :tag_list %>
+      <%= text_field :talk, :tag_list, value: @talk.tag_list.join(', '), class: 'form-control', disabled: true %>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-xs-6">
+        <div class="form-group">
+          <%= f.label :target %>
+          <%= f.text_field :target, class: 'form-control', disabled: true %>
+        </div>
+      </div>
+      <div class="col-sm-6 col-xs-4">
+        <div class="form-group">
+          <%= f.label :date %>
+          <div class="input-group">
+            <div class="input-group-addon">
+              <i class="glyphicon glyphicon-calendar"></i>
+            </div>
+            <%= text_field :talk, :date_str, class: 'form-control', disabled: true %>
+          </div><!-- /.input group -->
+        </div>
+      </div>
+      <div class="col-sm-6 col-xs-2">
+        <div class="form-group">
+          <%= f.label :time %>
+          <div class="input-group">
+            <%= text_field :talk, :time, value: l(@talk.time, format: :very_short), class: 'form-control', disabled: true %>
+          </div><!-- /.input group -->
+        </div>
+      </div>
+    </div>
+    <% end %>
+    <hr>
+    <%= link_to t('buttons.back_to_list'), talks_path, class: 'btn btn-default' %>
+    <% if @talk.published %>
+    <%= link_to t('buttons.cancel_talk'),cancel_talk_path(@talk), class: 'btn btn-danger',
+                data: { confirm: t('messages.are_you_sure') } %>
+    <% else %>
+    <%= link_to t('buttons.edit'), edit_talk_path(@talk), class: 'btn btn-primary' %>
+    <%= link_to t('buttons.publish'), preview_publish_talk_url(@talk), class: 'btn btn-success' %>
+
+    <%= link_to t('buttons.remove'), @talk, method: :delete, class: 'btn btn-danger',
+                data: { confirm: t('messages.are_you_sure') } %>
+    <% end %>
+  </div>
+
+  <% if @talk.filename %>
+      <div class="col-xs-5">
+        <%= image_tag @talk.filename, class: 'img-responsive' %>
+      </div>
+  <% end %>
+</div>

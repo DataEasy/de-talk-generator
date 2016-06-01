@@ -1,0 +1,7 @@
+.git/*
+.idea
+.bundle
+tmp/*
+log/*
+build/*
+Dockerfile

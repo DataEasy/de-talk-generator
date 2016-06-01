@@ -1,0 +1,51 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">
+        <%= t('title.preview', entity: Talk.model_name.human) %>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<%= render 'shared/validation_errors', model_instance: @talk %>
+
+<%= form_for(@talk, url: publish_talk_path) do |f| %>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <%= t 'views.talks.titles.preview_cover', talk_number: @talk.number_formated %>
+  </div>
+  <div class="panel-body">
+    <div class="col-xs-12">
+      <div style="height: 600px">
+      <%= image_tag preview_cover_image_talk_url(@talk, {_: (Time.now.to_f * 1000).to_i}), alt: '', width: '600',
+                    class: 'img-responsive center-block' %>
+      </div>
+      <div id="loading-img" class="loading text-center">
+        <%= t 'views.talks.hints.generating_image' %>
+        <div class="progress">
+          <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45"
+               aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-footer">
+    <%= link_to t('buttons.cancel'), talks_path, class: 'btn btn-default' %>
+    <%= link_to t('buttons.edit'), edit_talk_path(@talk), class: 'btn btn-primary' %>
+    <%= f.submit t('buttons.publish'), id: 'btnPublish', class: 'btn btn-success', disabled: true %>
+  </div>
+</div>
+<% end %>
+
+<script type="text/javascript">
+    $("img").one("load", function() {
+        $("#loading-img").hide();
+        $("#btnPublish").prop("disabled", false);
+    }).one("error", function() {
+        $("#loading-img").hide();
+        $("#btnPublish").prop("disabled", false);
+        $(this).parent().append("<div class='text-center'><%= t 'views.talks.hints.fail_load_html' %></div>");
+    });
+</script>

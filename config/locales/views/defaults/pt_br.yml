@@ -1,0 +1,27 @@
+"pt-br":
+  title:
+    system_title: DE Talks
+    login: Login
+    actions: Ações
+    new: "Novo(a) %{entity}"
+    editing: "Edição %{entity}"
+    preview: "Pré-Visualização da %{entity}"
+    show: "Visualização %{entity}"
+  menu:
+    home: Início
+    my_talks: Minhas Talks
+    exit: Sair
+  buttons:
+    close: Fechar
+    login: Login
+    new: "Novo(a) %{entity}"
+    remove: Remover
+    edit: Editar
+    show: Visualizar
+    cancel: Cancelar
+    cancel_talk: Cancelar DE Talk
+    publish: Publicar
+    create: Criar
+    update_preview: Atualizar Pré-Visualização
+    update: Atualizar
+    back_to_list: Voltar para Listagem

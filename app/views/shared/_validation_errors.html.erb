@@ -1,0 +1,13 @@
+<% if model_instance.errors.any? %>
+<div class="alert alert-danger alert-dismissible fade in" role="alert">
+  <h4>
+    <%= t 'activerecord.errors.messages.errors_from_being_saved',
+          count: model_instance.errors.count, model_name: model_instance.class.model_name.human  %>
+  </h4>
+  <ul>
+    <% model_instance.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
