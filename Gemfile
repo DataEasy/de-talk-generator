@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.5.1'
+gem 'rails', '4.2.7.1'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 gem 'pg', '0.18.4'
@@ -26,7 +26,7 @@ gem 'jbuilder', '2.4.1'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'devise', '3.5.6'
-gem 'net-ldap', '~> 0.14.0'
+gem 'net-ldap', '~> 0.16.0'
 gem 'acts-as-taggable-on', '3.5.0'
 gem 'slack-ruby-client', '0.6.0'
 gem 'google-api-client', '0.9'
@@ -48,7 +48,7 @@ group :development, :test do
   gem 'byebug', '8.2.2'
   gem 'rspec-rails', '3.4.0'
   gem 'bullet', '~> 4.0'
-  gem 'rubocop', '0.39.0', require: false
+  gem 'rubocop', '0.49.0', require: false
 end
 
 group :development do
